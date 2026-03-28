@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hospital Management</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+    <div class="sidebar">
+        <h2 class="logo">LifeLine Medical Center</h2>
+
+        <ul>
+<li><a href="{% url 'dashboard' %}">📊 Dashboard</a></li>
+<li><a href="{% url 'patients' %}">🧑‍🤝‍🧑 Patients</a></li>
+<li><a href="{% url 'all_doctors' %}">👨‍⚕️ All Doctors</a></li>
+<li><a href="{% url 'all_users' %}">👥 All Users</a></li>
+<li><a href="{% url 'departments' %}">🏥 Departments</a></li>
+<li><a href="{% url 'all_appointments' %}">📅 Appointments</a></li>
+<li><a href="{% url 'reports' %}">📈 Reports</a></li>
+<li><a href="{% url 'profile' %}">👤 Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+</div>
+
+</body>
+</html>

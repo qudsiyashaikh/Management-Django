@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1);">
+    
+    <h2 style="color: #2c3e50; margin-bottom: 20px; text-align: center;">
+        {% if doctor %} 📝 Edit Doctor: {{ doctor.name }} {% else %} ➕ Add New Doctor {% endif %}
+    </h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Full Name</label>
+            <input type="text" name="name" value="{{ doctor.name|default:'' }}" required 
+                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Specialization</label>
+            <input type="text" name="specialization" value="{{ doctor.specialization|default:'' }}" required
+                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Department</label>
+            <select name="department" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                <option value="">Select Department</option>
+                {% for dept in departments %}
+                    <option value="{{ dept.id }}" {% if doctor.department.id == dept.id %} selected {% endif %}>
+                        {{ dept.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Mobile Number</label>
+            <input type="text" name="mobile" value="{{ doctor.mobile|default:'' }}" required
+                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Email Address</label>
+            <input type="email" name="email" value="{{ doctor.email|default:'' }}" required
+                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <button type="submit" style="flex: 1; background: #27ae60; color: white; padding: 12px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer;">
+                {% if doctor %} Update Doctor {% else %} Save Doctor {% endif %}
+            </button>
+            <a href="{% url 'all_doctors' %}" style="flex: 1; text-align: center; background: #95a5a6; color: white; padding: 12px; border-radius: 5px; text-decoration: none; font-weight: bold;">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

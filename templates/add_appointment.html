@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="margin-left: 260px; padding: 40px; background: #f8f9fa; min-height: 100vh;">
+    <div style="max-width: 600px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 5px 25px rgba(0,0,0,0.1); margin: 0 auto;">
+        
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2 style="color: #2c3e50; margin: 0;">📅 Book New Appointment</h2>
+            <p style="color: #7f8c8d;">Please fill in the patient details below</p>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">Patient Full Name</label>
+                <input type="text" name="patient_name" required placeholder="e.g. John Doe" 
+                       style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 8px; box-sizing: border-box;">
+            </div>
+
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">Select Doctor</label>
+                <select name="doctor" required style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 8px; background: white;">
+                    <option value="">-- Choose a Doctor --</option>
+                    {% for doc in doctors %}
+                        <option value="{{ doc.id }}">Dr. {{ doc.name }} ({{ doc.specialization }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">Date</label>
+                    <input type="date" name="date" required style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 8px;">
+                </div>
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">Time</label>
+                    <input type="time" name="time" required style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 8px;">
+                </div>
+            </div>
+
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #34495e;">Reason for Visit</label>
+                <textarea name="reason" rows="3" placeholder="Symptoms or checkup details..." 
+                          style="width: 100%; padding: 12px; border: 1px solid #dcdfe6; border-radius: 8px; box-sizing: border-box;"></textarea>
+            </div>
+
+            <button type="submit" style="width: 100%; background: #3498db; color: white; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+                Confirm Appointment
+            </button>
+            
+            <a href="{% url 'all_appointments' %}" style="display: block; text-align: center; margin-top: 15px; color: #7f8c8d; text-decoration: none; font-size: 14px;">Cancel & Go Back</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

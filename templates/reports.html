@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div style="width: 100%; padding: 20px; box-sizing: border-box; background: #f8f9fa; min-height: 100vh;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h2 style="color: #2c3e50; font-size: 26px; font-weight: bold; margin: 0; display: flex; align-items: center; gap: 12px;">
+            📊 Hospital Analytics Report
+        </h2>
+        </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px;">
+        
+        <div style="background: linear-gradient(135deg, #2ecc71, #27ae60); padding: 25px; border-radius: 15px; color: white; box-shadow: 0 8px 20px rgba(46, 204, 113, 0.2); transition: 0.3s;">
+            <p style="margin: 0; font-size: 15px; opacity: 0.9; font-weight: 500;">Total Revenue</p>
+            <h2 style="margin: 15px 0; font-size: 32px;">₹ {{ total_revenue }}</h2>
+            <div style="font-size: 12px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 10px; border-radius: 10px;">
+                Earnings from Paid Bills
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #e74c3c, #c0392b); padding: 25px; border-radius: 15px; color: white; box-shadow: 0 8px 20px rgba(231, 76, 60, 0.2); transition: 0.3s;">
+            <p style="margin: 0; font-size: 15px; opacity: 0.9; font-weight: 500;">Appointments</p>
+            <h2 style="margin: 15px 0; font-size: 32px;">{{ app_count }}</h2>
+            <div style="font-size: 12px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 10px; border-radius: 10px;">
+                Total Patients Visited
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #9b59b6, #8e44ad); padding: 25px; border-radius: 15px; color: white; box-shadow: 0 8px 20px rgba(155, 89, 182, 0.2); transition: 0.3s;">
+            <p style="margin: 0; font-size: 15px; opacity: 0.9; font-weight: 500;">Low Stock Items</p>
+            <h2 style="margin: 15px 0; font-size: 32px;">{{ low_stock_count }}</h2>
+            <div style="font-size: 12px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 10px; border-radius: 10px;">
+                Medicines below 10 units
+            </div>
+        </div>
+
+        <div style="background: linear-gradient(135deg, #3498db, #2980b9); padding: 25px; border-radius: 15px; color: white; box-shadow: 0 8px 20px rgba(52, 152, 219, 0.2); transition: 0.3s;">
+            <p style="margin: 0; font-size: 15px; opacity: 0.9; font-weight: 500;">Total Staff</p>
+            <h2 style="margin: 15px 0; font-size: 32px;">{{ doc_count }}</h2>
+            <div style="font-size: 12px; background: rgba(255,255,255,0.2); display: inline-block; padding: 4px 10px; border-radius: 10px;">
+                Active Doctors in Hospital
+            </div>
+        </div>
+
+    </div>
+
+    <div style="background: white; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; border: 1px solid #eee;">
+        <div style="padding: 20px 25px; border-bottom: 1px solid #f1f1f1; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin: 0; color: #34495e; font-size: 18px; display: flex; align-items: center; gap: 10px;">
+                📄 Recent Billing Activity
+            </h3>
+            <a href="#" style="font-size: 13px; color: #3498db; text-decoration: none; font-weight: bold;">View Full Billing History →</a>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead style="background: #2f3542; color: white;">
+                <tr>
+                    <th style="padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase;">Invoice</th>
+                    <th style="padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase;">Patient</th>
+                    <th style="padding: 15px; text-align: left; font-size: 13px; text-transform: uppercase;">Amount</th>
+                    <th style="padding: 15px; text-align: center; font-size: 13px; text-transform: uppercase;">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in recent_bills %}
+                <tr style="border-bottom: 1px solid #f9f9f9; transition: 0.2s;">
+                    <td style="padding: 15px; color: #2c3e50; font-weight: bold;">#{{ bill.id }}</td>
+                    <td style="padding: 15px; color: #555;">{{ bill.patient_name }}</td>
+                    <td style="padding: 15px; color: #27ae60; font-weight: 800; font-size: 16px;">₹ {{ bill.amount }}</td>
+                    <td style="padding: 15px; text-align: center;">
+                        {% if bill.status == 'Paid' %}
+                            <span style="background: #d4edda; color: #155724; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #c3e6cb;">Paid</span>
+                        {% else %}
+                            <span style="background: #fff3cd; color: #856404; padding: 5px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; border: 1px solid #ffeeba;">Unpaid</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="padding: 40px; text-align: center; color: #999; font-style: italic;">
+                        No recent billing activity found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{% endblock %}

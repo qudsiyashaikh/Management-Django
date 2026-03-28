@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Main Layout - Isko maximum LEFT shift kiya hai */
+    .page-wrapper {
+        width: calc(100% - 100px); /* Space sidebar ke hisaab se adjust kiya */
+        margin-left: 100px; /* Isse content kaafi LEFT aa jayega */
+        background-color: #f4f7f6;
+        min-height: 100vh;
+        padding: 40px 10px; /* Thoda padding adjust kiya */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Inner Container */
+    .dept-container {
+        width: 100%; 
+        max-width: 1300px; /* Width thodi badhayi taaki left alignment achhi dikhe */
+        margin: 0; 
+    }
+
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        max-width: 1200px;
+    }
+
+    .header-section h2 {
+        color: #2c3e50;
+        font-size: 28px;
+        margin: 0;
+    }
+
+    /* Grid Layout for Cards */
+    .dept-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        max-width: 1200px;
+    }
+
+    /* Department Card Style */
+    .dept-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        border-top: 5px solid #3498db;
+    }
+
+    .dept-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    }
+
+    .dept-icon {
+        font-size: 35px;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    .dept-name {
+        font-size: 19px;
+        color: #333;
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .dept-desc {
+        color: #7f8c8d;
+        font-size: 13.5px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .dept-stats {
+        border-top: 1px solid #eee;
+        padding-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .doc-count {
+        background: #e1f5fe;
+        color: #0288d1;
+        padding: 4px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .view-btn {
+        text-decoration: none;
+        color: #3498db;
+        font-weight: 600;
+        font-size: 13px;
+    }
+
+    /* Add Button */
+    .add-btn {
+        background-color: #27ae60;
+        color: white;
+        padding: 10px 18px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 14px;
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="dept-container">
+        <div class="header-section">
+            <h2>🏥 Hospital Departments</h2>
+            <a href="{% url 'add_department' %}" class="add-btn">+ Add Department</a>
+        </div>
+
+        <div class="dept-grid">
+            {% for dept in departments %}
+            <div class="dept-card">
+                <span class="dept-icon">🏢</span>
+                <div class="dept-name">{{ dept.name }}</div>
+                <p class="dept-desc">
+                    {{ dept.description|default:"No description available for this department."|truncatewords:15 }}
+                </p>
+                <div class="dept-stats">
+                    <span class="doc-count">{{ dept.doctor_set.count }} Doctors</span>
+                    <a href="#" class="view-btn">Details →</a>
+                </div>
+            </div>
+            {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: white; border-radius: 10px; width: 100%;">
+                <p style="color: #888;">No departments found. Please add from Admin Panel.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

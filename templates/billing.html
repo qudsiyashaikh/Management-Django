@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* Main container alignment */
+    .billing-wrapper {
+        margin-left: 260px; /* Sidebar width ke hisab se */
+        padding: 40px;
+        background: #f4f7f6;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Stats Cards */
+    .stats-container {
+        display: flex;
+        gap: 25px;
+        margin-bottom: 35px;
+    }
+
+    .stat-card {
+        flex: 1;
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        border-left: 6px solid #3498db;
+        transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Table Styling */
+    .invoice-table-container {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+
+    .table-header {
+        padding: 25px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f8f9fa;
+        padding: 18px 20px;
+        color: #7f8c8d;
+        text-align: left;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    td {
+        padding: 18px 20px;
+        border-bottom: 1px solid #f1f1f1;
+        color: #2c3e50;
+        font-size: 15px;
+    }
+
+    /* Status Badges */
+    .status-badge {
+        padding: 6px 15px;
+        border-radius: 25px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .paid { background-color: #d4edda; color: #155724; }
+    .unpaid { background-color: #f8d7da; color: #721c24; }
+
+    /* Action Buttons */
+    .btn-create {
+        background: #3498db;
+        color: white;
+        border: none;
+        padding: 12px 25px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3);
+    }
+
+    .btn-pdf {
+        background: #f1f4f6;
+        border: 1px solid #dcdde1;
+        padding: 6px 12px;
+        border-radius: 6px;
+        color: #2f3640;
+        font-weight: 500;
+        cursor: pointer;
+    }
+
+    .btn-pdf:hover { background: #dcdde1; }
+
+    /* Responsive */
+    @media (max-width: 992px) {
+        .billing-wrapper { margin-left: 0; padding: 20px; }
+        .stats-container { flex-direction: column; }
+    }
+</style>
+
+<div class="billing-wrapper">
+    <div class="stats-container">
+        <div class="stat-card" style="border-left-color: #2ecc71;">
+            <p style="color: #95a5a6; margin: 0; font-size: 14px; font-weight: 600;">Total Revenue (Paid)</p>
+            <h2 style="margin: 10px 0; color: #2d3436;">₹ {{ total_revenue|default:"0.00" }}</h2>
+        </div>
+        <div class="stat-card" style="border-left-color: #e74c3c;">
+            <p style="color: #95a5a6; margin: 0; font-size: 14px; font-weight: 600;">Pending Invoices</p>
+            <h2 style="margin: 10px 0; color: #2d3436;">{{ pending_count|default:"0" }}</h2>
+        </div>
+    </div>
+
+    <div class="invoice-table-container">
+        <div class="table-header">
+            <h3 style="margin: 0; color: #2c3e50; display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 24px;">📑</span> Invoices & Billing
+            </h3>
+            <button class="btn-create">+ Create New Invoice</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Invoice ID</th>
+                    <th>Patient Name</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td style="font-weight: 600; color: #3498db;">#{{ bill.id }}</td>
+                    <td style="font-weight: 500;">{{ bill.patient_name }}</td>
+                    <td style="color: #7f8c8d;">{{ bill.date|date:"d M, Y" }}</td>
+                    <td style="font-weight: 700; color: #2c3e50;">₹ {{ bill.amount }}</td>
+                    <td>
+                        <span class="status-badge {% if bill.status == 'Paid' %}paid{% else %}unpaid{% endif %}">
+                            {{ bill.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn-pdf">📄 PDF</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" style="padding: 60px; text-align: center; color: #bdc3c7;">
+                        <div style="font-size: 40px; margin-bottom: 10px;">📂</div>
+                        <p>Abhi tak koi bill generate nahi hua hai.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

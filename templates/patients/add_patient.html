@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .form-container {
+        margin-left: 260px;
+        padding: 40px;
+        background: #f8f9fa;
+        min-height: 100vh;
+    }
+    .form-card {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        max-width: 600px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #34495e;
+    }
+    .form-control input, .form-control select, .form-control textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box; /* Isse padding box ke andar rehti hai */
+    }
+    .btn-save {
+        background: #27ae60;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+    .btn-save:hover {
+        background: #219150;
+    }
+    .btn-cancel {
+        color: #7f8c8d;
+        text-decoration: none;
+        margin-left: 15px;
+        font-size: 14px;
+    }
+</style>
+
+<div class="form-container">
+    <div class="form-card">
+        <h2 style="color: #2c3e50; margin-top: 0;">🏥 Add New Patient</h2>
+        <hr style="border: 0; border-top: 1px solid #eee; margin-bottom: 25px;">
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="form-control">
+                {{ form.as_p }}
+            </div>
+
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn-save">Save Patient Details</button>
+                <a href="{% url 'patients' %}" class="btn-cancel">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
