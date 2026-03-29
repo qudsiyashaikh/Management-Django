@@ -7,7 +7,8 @@ from .models import Appointment, Bill, Medicine, Report
 from .models import Appointment, Doctor
 from django.utils import timezone
 from .models import Appointment, Patient, Doctor
-
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model
 
 # Models import (Ek hi baar mein saare models)
 
@@ -26,7 +27,13 @@ from .models import (
 from .forms import PatientForm, RegistrationForm
 
 
-
+def create_admin_silently(request):
+    User = get_user_model()
+    if not User.objects.filter(username="admin").exists():
+        User.objects.create_superuser("admin", "admin@example.com", "Admin@123")
+        return HttpResponse("Admin Created! Username: admin, Pass: Admin@123")
+    else:
+        return HttpResponse("Admin already exists.")
 # ---------------- USERS AUTH (Fixed) ----------------
 
 
