@@ -5,7 +5,7 @@ A robust, full-stack web application built independently using **Python** and **
 ## 🚀 Live Demo
 
 Check out the fully functional live application here: **[Live Demo](https://management-django.onrender.com/)**
-
+<img width="1919" height="847" alt="Image" src="https://github.com/user-attachments/assets/0099af07-34e8-4147-969c-f339b69c62d4" />
 ---
 
 ## ✨ Features
