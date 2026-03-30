@@ -1,4 +1,6 @@
+import os
 from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -32,11 +34,10 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'myproject.urls'
 
-# TEMPLATES: Sirf EK baar hona chahiye (Fixed)
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], # Yahan templates folder ka path hai
+        'DIRS': [BASE_DIR / 'templates'], 
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -51,18 +52,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'myproject.wsgi.application'
 
-# Database Setup (MySQL)
-#import pymysql
-#pymysql.install_as_MySQLdb()
-
+# Database Setup - Fixed for PostgreSQL and Local SQLite
 DATABASES = {
-     'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600
+    )
 }
 
-# Custom User Model (YAHAN LIKHNA HAI)
+# Custom User Model
 AUTH_USER_MODEL = 'core.CustomUser'
 
 # Password validation
@@ -71,6 +69,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://management-django.onrender.com',
+    'https://*.onrender.com'
 ]
 
 # Internationalization
@@ -85,5 +88,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default primary key type (Taaki warnings na aayein)
+# Security settings for Production
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
