@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from core.views import setup_departments
 
 urlpatterns = [
     # --- Authentication ---
@@ -8,7 +9,7 @@ urlpatterns = [
     path('logout/', views.user_logout, name='logout'), 
     path('user/edit/<int:id>/', views.edit_user, name='edit_user'),
     path('user/delete/<int:id>/', views.delete_user, name='delete_user'),
-   
+    path('setup-db/', setup_departments),
    
     # --- Dashboard ---
     path('dashboard/', views.dashboard, name='dashboard'),
