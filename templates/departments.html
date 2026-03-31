@@ -2,20 +2,21 @@
 
 {% block content %}
 <style>
-    /* Main Layout - Isko maximum LEFT shift kiya hai */
+    /* Main Layout - Scroll hatane ke liye overflow-x hidden kiya */
     .page-wrapper {
-        width: calc(100% - 100px); /* Space sidebar ke hisaab se adjust kiya */
-        margin-left: 100px; /* Isse content kaafi LEFT aa jayega */
+        width: calc(100% - 100px); 
+        margin-left: 100px; 
         background-color: #f4f7f6;
         min-height: 100vh;
-        padding: 40px 10px; /* Thoda padding adjust kiya */
+        padding: 40px 10px; 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        overflow-x: hidden; /* Isse niche wali scroll line gayab ho jayegi */
     }
 
     /* Inner Container */
     .dept-container {
         width: 100%; 
-        max-width: 1300px; /* Width thodi badhayi taaki left alignment achhi dikhe */
+        max-width: 1300px; 
         margin: 0; 
     }
 
@@ -24,7 +25,7 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 30px;
-        max-width: 1200px;
+        max-width: 1150px; /* Isko thoda kam kiya taaki button edge se dur rahe */
     }
 
     .header-section h2 {
@@ -38,7 +39,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 20px;
-        max-width: 1200px;
+        max-width: 1150px; /* Cards ko bhi header ke barabar rakha */
     }
 
     /* Department Card Style */
@@ -100,7 +101,7 @@
         font-size: 13px;
     }
 
-    /* Add Button */
+    /* Add Button - Isko thoda left shift kiya */
     .add-btn {
         background-color: #27ae60;
         color: white;
@@ -109,6 +110,7 @@
         text-decoration: none;
         font-weight: bold;
         font-size: 14px;
+        margin-right: 25px; /* Button ko kinare se 2-3 inch andar kiya */
     }
 </style>
 
@@ -134,7 +136,7 @@
             </div>
             {% empty %}
             <div style="grid-column: 1/-1; text-align: center; padding: 50px; background: white; border-radius: 10px; width: 100%;">
-                <p style="color: #888;">No departments found. Please add from Admin Panel.</p>
+                <p style="color: #888;">No departments found.</p>
             </div>
             {% endfor %}
         </div>
