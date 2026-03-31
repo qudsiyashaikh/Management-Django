@@ -9,7 +9,7 @@ from django.utils import timezone
 from .models import Appointment, Patient, Doctor
 from django.http import HttpResponse
 from django.contrib.auth import get_user_model
-
+from .models import Department
 # Models import (Ek hi baar mein saare models)
 
 from .models import (
@@ -35,7 +35,18 @@ def create_admin_silently(request):
     else:
         return HttpResponse("Admin already exists.")
 # ---------------- USERS AUTH (Fixed) ----------------
-
+    def setup_departments(request):
+    depts = ['Cardiology', 'Neurology', 'Orthopedics', 'General Medicine', 'Emergency']
+    created_list = []
+    for name in depts:
+        dept, created = Department.objects.get_or_create(name=name)
+        if created:
+            created_list.append(name)
+    
+    if created_list:
+        return HttpResponse(f"Mubarak ho! Ye departments add ho gaye: {', '.join(created_list)}")
+    else:
+        return HttpResponse("Departments pehle se hi database mein hain!")
 
 
 # 1. Register View: Fixed to handle hashing & auto-login
